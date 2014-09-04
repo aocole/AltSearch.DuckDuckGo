@@ -3,12 +3,15 @@
     // List of search engines used in the search
     var searchEngines = [
         // {"Name": "", "Url": ""}
-        {"Name": "Google",    "Url": "https://www.google.ca/search?q="},
-        {"Name": "Bing",      "Url": "http://www.bing.com/search?q="},
-        {"Name": "Yahoo!",    "Url": "http://search.yahoo.com/search?p="},
+        {"Name": "Google",    "Url": "https://www.google.com/#q="},
+        {"Name": "Bing",      "Url": "https://www.bing.com/search?q="},
+        {"Name": "Yahoo!",    "Url": "https://search.yahoo.com/search?p="},
         {"Name": "Ask",       "Url": "http://www.ask.com/web?q="},
-        {"Name": "Wikipedia", "Url": "https://en.wikipedia.org/wiki/Special:Search/"}
+        {"Name": "Wikipedia", "Url": "https://en.wikipedia.org/w/index.php?search="}
     ];
+
+    // What element should we inject in to?
+    var where = document.getElementsByClassName('results--sidebar')[0];
 
     // get the query string parameter
     function getQueryString(param) {
@@ -19,7 +22,7 @@
         if (results == null){
             return "";
         }
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
+        return results[1];
     }
 
     // generate the search link
@@ -27,7 +30,7 @@
         var divTag = document.createElement("div");
         divTag.className = "search_suggestion";
         divTag.innerHTML = "<a href='" + searchEngineUrl + getQueryString("q") + "'>search on " + searchEngineName + "</a>";
-        document.getElementById("side_suggestions").appendChild(divTag); // inject it into the container.
+        where.appendChild(divTag); // inject it into the container.
     }
 
     (function(){
@@ -36,7 +39,7 @@
         var divTag = document.createElement("div");
         divTag.className = "spacer_bottom_7"; // class predefined in the DDG styles
         divTag.innerHTML = "Alternate Searches:";
-        document.getElementById("side_suggestions").appendChild(divTag); // inject it into the container
+        where.appendChild(divTag); // inject it into the container
 
         // Then we loop through all the search engines and inject their links into DuckDuckGo.
         for(var i in searchEngines){
